@@ -2,8 +2,13 @@ package com.conditioncoach
 
 class Team {
 	
-	def name;
-
+	static hasMany = [teamMembers: TeamMember, dailyActivities: DailyActivity]
+	
+	/*
+	 * Attributes
+	 */
+	String name;
+	
     static constraints = {
     }
 }

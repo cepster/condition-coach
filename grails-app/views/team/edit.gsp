@@ -5,8 +5,57 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'team.label', default: 'Team')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+<%--		<g:javascript library='jquery' />--%>
+<%--		<g:javascript library='jquery-ui'/>--%>
+		<r:require module="jquery"/>
+		<g:javascript src='jquery.tablesorter.min.js'/>
+<%--		<r:require module="jquery-ui"/>--%>
 	</head>
 	<body>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#addMemberDiv').dialog({
+					title: 'Add Member To Team',
+					autoOpen:false,
+					height:400,
+					width:500,
+					show:'scale',
+					hide:'scale',
+					buttons: [
+					{id:"submit",
+					 text: "Submit",
+					 click: function(){
+							addTeamMember();
+						}
+					},
+					{id:"cancel",
+					 text: "Cancel",
+					 click: function(){
+						$(this).dialog('close');
+						}
+					}
+					]
+				});
+
+<%--				$('#memberTable').tablesorter();--%>
+			});
+
+			function addTeamMember(){
+				var firstName = $('#firstName').val();
+				var lastName = $('#lastName').val();
+				var email = $('#email').val();
+
+				$('#memberTable thead').append('<tr><td>' + firstName + ' ' + lastName + '</td><td>' + email + '</td><td>Invitation Sent</td></tr>');
+
+				//TODO Save member AJAX call
+				
+				$('#addMemberDiv').dialog('close');
+			}
+
+			function deleteTeamMember(){
+				//TODO Delete member AJAX call
+			}
+		</script>
 		<a href="#edit-team" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
@@ -32,6 +81,35 @@
 				<g:hiddenField name="version" value="${teamInstance?.version}" />
 				<fieldset class="form">
 					<g:render template="form"/>
+					<br/>
+					<br/>
+					<table id="memberTable" name="memberTable" class="tablesorter">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Email Address</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+						
+						</tbody>
+					</table>
+					<br/>
+					<br/>
+					<input type="button" id="addMember" name="addMember" value="Add Team Member" onclick="$('#addMemberDiv').dialog('open')"/>
+					<div id="addMemberDiv" name="addMemberDiv" style="display:none;">
+						First Name<br/>
+						<input type="text" id="firstName" name="firstName"/>
+						<br/><br/>
+						Last Name<br/>
+						<input type="text" id="lastName" name="lastName"/>
+						<br/>
+						<br/>
+						Email Address<br/>
+						<input type="text" id="email" name="email"/>
+						<br/>
+					</div>
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

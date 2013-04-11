@@ -15,15 +15,27 @@
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
 		<g:layoutHead/>
+		<g:javascript library='jquery' />
+		<g:javascript library='jquery-ui' />
+		<g:javascript library="application"/>
 		<r:layoutResources />
 	</head>
 	<body>
-		<div id="headerStrip" role="banner"><g:link controller="Login" action="auth">Home</g:link></div>
-		<div id="grailsLogo" role="banner"><img src="${resource(dir: 'images', file: 'weight_lifting_cartoon_man.jpg')}" alt="Condition Coach"/></div>
-		<g:layoutBody/>
+		<div id="headerStrip" role="banner">
+			<p style="display:inline;font-size:16pt;">Condition Coach</p>
+			<g:link controller="dashboard" action="index" style="right:10em;">Home</g:link>
+			<g:link controller="login" action="auth" style="right:5em;">Profile</g:link>
+			<g:link controller="logout" action="index">Log Out</g:link>
+		</div>
+		<div id="profileInfo">
+			<img src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m(01-32)_gr.jpg" style="height:20%;width:80%;left:10%;top:2%;position:absolute;"/>
+		</div>
+		<div id="contentPane">
+			<g:layoutBody/>
+		</div>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
+		
 		<r:layoutResources />
 	</body>
 </html>

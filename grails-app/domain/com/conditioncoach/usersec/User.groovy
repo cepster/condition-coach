@@ -1,6 +1,10 @@
 package com.conditioncoach.usersec
 
+import com.conditioncoach.TeamMember
+
 class User {
+	
+	static hasMany = [teamMembers: TeamMember]
 
 	transient springSecurityService
 

@@ -1,0 +1,39 @@
+#navList li {
+	list-style-type:none;
+	display:inline;
+	-moz-box-shadow: 0 0 0.3em black;
+	-webkit-box-shadow: 0 0 0.3em black;
+	        box-shadow: 0 0 0.3em black;
+	padding-left:5px;
+	padding-right:5px;
+	border-top-left-radius: 10px 5px;
+	border-top-right-radius: 10px 5px;
+	background-color:#C0C0C0;
+	font-weight:bold;
+	color:black;
+	margin-bottom:-2px;
+	margin-left:-2px;
+}
+
+#navList li a{
+	text-decoration:none;
+}
+
+#tabContent {
+	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
+	   -moz-box-shadow: 0 0 0.3em #000000;
+	-webkit-box-shadow: 0 0 0.3em #000000;
+	        box-shadow: 0 0 0.3em #000000;
+	min-height:500px;
+}
+
+.selected {
+	background-color:white !important;
+	border-top:2px solid #C0C0C0 !important;
+	border-left:2px solid #C0C0C0 !important;
+	border-right:2px solid #C0C0C0 !important;
+	border-bottom:0px !important;
+	-moz-box-shadow: 0 0 0.3em -0.3em #000000 !important;
+	-webkit-box-shadow: 0 0 0.3em -0.3em #000000 !important;
+	        box-shadow: 0 0 0.3em -0.3em #000000 !important;
+}
