@@ -27,13 +27,3 @@
 	min-height:500px;
 }
 
-.selected {
-	background-color:white !important;
-	border-top:2px solid #C0C0C0 !important;
-	border-left:2px solid #C0C0C0 !important;
-	border-right:2px solid #C0C0C0 !important;
-	border-bottom:0px !important;
-	-moz-box-shadow: 0 0 0.3em -0.3em #000000 !important;
-	-webkit-box-shadow: 0 0 0.3em -0.3em #000000 !important;
-	        box-shadow: 0 0 0.3em -0.3em #000000 !important;
-}

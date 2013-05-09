@@ -3,7 +3,6 @@ import grails.converters.JSON
 
 import javax.servlet.http.HttpServletResponse
 
-import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.security.authentication.AccountExpiredException
 import org.springframework.security.authentication.CredentialsExpiredException
@@ -12,6 +11,8 @@ import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
+import com.conditioncoach.Team
 
 class LoginController {
 
@@ -32,6 +33,37 @@ class LoginController {
 		else {
 			redirect action: 'auth', params: params
 		}
+	}
+	
+	def register = {
+		render view: 'register'
+	}
+	
+	def registerSave = {
+		
+		params.each{key,value->println "${key}:${value}"}
+		
+		def user = new User()
+		user.setUsername(params.get("userName"))
+		user.setPassword(params.get("password"))
+		user.setEnabled(true)
+		user.setAccountExpired(false)
+		user.setAccountLocked(false)
+		user.setPasswordExpired(false)
+		user.save(flush:true)
+		
+		def userRole = new UserRole()
+		userRole.setUser(user)
+		userRole.setRole(Role.findByAuthority("ROLE_COACH"))
+		userRole.save(flush:true)
+		
+		def team = new Team()
+		team.setName(params.get("teamName"))
+		team.setUser(user)
+		team.save(flush:true)
+		
+//		redirect controller:'Team', view:'Edit', id:team.id
+		redirect(uri:'/')
 	}
 
 	/**

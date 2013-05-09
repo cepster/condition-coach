@@ -8,5 +8,7 @@ class DailyActivity {
 	Team team
 	
     static constraints = {
+		startDate nullable:true
+		endDate nullable:true
     }
 }

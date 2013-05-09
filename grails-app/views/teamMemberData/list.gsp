@@ -8,34 +8,42 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('input[type=radio]').click(function(){
+					var url = '${createLink(controller:"TeamMemberData", action:"getPlayerAggData")}?id=' + $(this).attr('value');
+<%--					alert(url);--%>
+					$.getJSON(url, function(data) {
+						$('#calories').empty().append(data.calories);
+						$('#hoursSlept').empty().append(data.hoursSlept);
+				    });
+				});
+			});
+
+		</script>
 		<a href="#list-teamMemberData" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
 		<div id="list-teamMemberData" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<h1>Choose member to view</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+			<table style="height:300px;">
 				<thead>
 					<tr>
-					
+						<td><b>Member Name</b></td>
 					</tr>
 				</thead>
 				<tbody>
-				<g:each in="${teamMemberDataInstanceList}" status="i" var="teamMemberDataInstance">
+				<g:each in="${teamMemberInstanceList}" status="i" var="teamMemberInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
+						<td><input type="radio" id="player" name="player" value="${teamMemberInstance?.id}"/>${" " + teamMemberInstance?.firstName + " " + teamMemberInstance?.lastName}</td>
 					</tr>
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<g:paginate total="${teamMemberDataInstanceTotal}" />
+			<div id="memberData">
+				<b>Average Calories:</b> <p id="calories"></p><br/>
+				<b>Average Hours Slept:</b> <p id="hoursSlept"></p><br/>
 			</div>
 		</div>
 	</body>

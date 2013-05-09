@@ -1,18 +1,27 @@
 package com.conditioncoach
 
+import grails.converters.JSON
+
 import org.springframework.dao.DataIntegrityViolationException
+
+import com.conditioncoach.usersec.User
 
 class TeamMemberDataController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	
+	def springSecurityService
 
     def index() {
         redirect(action: "list", params: params)
     }
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [teamMemberDataInstanceList: TeamMemberData.list(params), teamMemberDataInstanceTotal: TeamMemberData.count()]
+		
+		def thisUser = User.get(springSecurityService.getPrincipal().id)
+		def teamInstance = Team.findByUser(thisUser)
+		
+		[teamMemberInstanceList: TeamMember.findAllByTeam(teamInstance)]
     }
 
     def create() {
@@ -99,4 +108,19 @@ class TeamMemberDataController {
             redirect(action: "show", id: id)
         }
     }
+	
+	def getPlayerAggData(Long id){
+		TeamMember member = TeamMember.get(id)
+		
+		def results = TeamMemberData.findAllByMember(member)
+		
+		def calories = results.sum{it.caloriesBurned}/results.size()
+		println "CALORIES: ${calories}"
+		def hoursSlept = results.sum{it.hoursSlept}/results.size()
+		println "HOURS SLEPT: ${hoursSlept}"
+		def map = [calories:calories, hoursSlept:hoursSlept]
+		
+		println map as JSON
+		render map as JSON
+	}
 }

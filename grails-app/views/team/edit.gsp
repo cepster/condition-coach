@@ -5,11 +5,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'team.label', default: 'Team')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
-<%--		<g:javascript library='jquery' />--%>
-<%--		<g:javascript library='jquery-ui'/>--%>
 		<r:require module="jquery"/>
-		<g:javascript src='jquery.tablesorter.min.js'/>
-<%--		<r:require module="jquery-ui"/>--%>
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -36,34 +32,44 @@
 					}
 					]
 				});
-
-<%--				$('#memberTable').tablesorter();--%>
 			});
 
 			function addTeamMember(){
 				var firstName = $('#firstName').val();
 				var lastName = $('#lastName').val();
 				var email = $('#email').val();
+				var teamID = '${teamInstance?.id}';
 
-				$('#memberTable thead').append('<tr><td>' + firstName + ' ' + lastName + '</td><td>' + email + '</td><td>Invitation Sent</td></tr>');
+				$('#firstName').val('');
+				$('#lastName').val('');
+				$('#email').val('');
 
-				//TODO Save member AJAX call
-				
-				$('#addMemberDiv').dialog('close');
+				${remoteFunction(
+						controller:'Team',
+						action:'addTeamMember',
+						params: '\'teamID=\' + teamID + \'&firstName=\' + firstName + \'&lastName=\' + lastName + \'&email=\' + email',
+						onSuccess:'addTeamMemberRow(data);$("#addMemberDiv").dialog("close");')};
 			}
 
-			function deleteTeamMember(){
-				//TODO Delete member AJAX call
+			function addTeamMemberRow(data){
+				$('#memberTable thead').append('<tr><td>' + data.firstName + ' ' + data.lastName + '</td>' + 
+												   '<td>' + data.email + '</td>' + 
+												   '<td>Invitation Sent</td>' +
+												   '<td align="center"><a href="javascript:deleteTeamMember(' + data.id + ');"><img src="' + '${resource(dir: 'images', file: 'delete.png')}' + '"/></a></td>');
+			}
+
+			function deleteTeamMember(id){
+				if(confirm('Remove Team Member from Team?  This cannot be undone')){
+					${remoteFunction(
+						controller:'Team',
+						action:'removeTeamMember',
+						params: '\'memberID=\' + id',
+						onComplete:'var url = \'' + createLink(controller: "team", action: "edit", id: teamInstance?.id) + '\'; window.location.href=url;'	
+					)};
+				}
 			}
 		</script>
 		<a href="#edit-team" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
 		<div id="edit-team" class="content scaffold-edit" role="main">
 			<h1><g:message code="default.edit.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
@@ -76,7 +82,7 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form method="post" >
+			<g:form method="post" enctype="multipart/form-data">
 				<g:hiddenField name="id" value="${teamInstance?.id}" />
 				<g:hiddenField name="version" value="${teamInstance?.version}" />
 				<fieldset class="form">
@@ -89,10 +95,18 @@
 								<th>Name</th>
 								<th>Email Address</th>
 								<th>Status</th>
+								<th>Delete Member</th>
 							</tr>
 						</thead>
 						<tbody>
-						
+							<g:each in="${teamInstance?.teamMembers}">
+								<tr>
+									<td>${it?.firstName + " " + it?.lastName}</td>
+									<td>${it?.email}</td>
+									<td>${it?.getStatusName()}</td>
+									<td align="center"><a href="javascript:deleteTeamMember('${it?.id}');"><img src="${resource(dir: 'images', file: 'delete.png')}"/></a></td>
+								</tr>
+							</g:each>
 						</tbody>
 					</table>
 					<br/>
@@ -112,8 +126,7 @@
 					</div>
 				</fieldset>
 				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					<g:actionSubmit class="save" action="save" value="${message(code: 'default.button.update.label', default: 'Save Team')}" />
 				</fieldset>
 			</g:form>
 		</div>

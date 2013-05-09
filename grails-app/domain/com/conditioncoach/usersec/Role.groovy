@@ -1,6 +1,9 @@
 package com.conditioncoach.usersec
 
 class Role {
+	
+	private static String ROLE_TEAMMEMBER = "ROLE_TEAMMEMBER"
+	private static String ROLE_COACH = "ROLE_COACH"
 
 	String authority
 

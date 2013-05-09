@@ -29,7 +29,7 @@
 				<g:each in="${teamInstanceList}" status="i" var="teamInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						<td>
-							<g:link controller="team" action="show" id="${teamInstance.id}">${teamInstance.name}</g:link>
+							<g:link controller="team" action="edit" id="${teamInstance.id}">${teamInstance.name}</g:link>
 						</td>
 					</tr>
 				</g:each>

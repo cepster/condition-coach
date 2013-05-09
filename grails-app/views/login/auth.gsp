@@ -112,6 +112,9 @@
 			<p>
 				<input type='submit' id="submit" value='${message(code: "springSecurity.login.button")}'/>
 			</p>
+			<p>
+				<g:link action="register">New Team</g:link>
+			</p>
 		</form>
 	</div>
 </div>

@@ -1,5 +1,7 @@
 package com.conditioncoach
 
+import java.sql.Blob;
+
 import com.conditioncoach.usersec.User
 
 class TeamMember {
@@ -13,12 +15,27 @@ class TeamMember {
 	String lastName
 	String firstName
 	Date birthDate
+	String email
 	int status
+	String nikeUserName
+	String nikePassword
 	User user
 	Team team
+	Blob avatar
+	String avatarType
 	
     static constraints = {
+		birthDate nullable:true
+		user nullable:true
+		nikeUserName nullable:true
+		nikePassword nullable:true
+		avatar nullable: true, maxSize:1073741824, sqlType: "longblob"
+		avatarType nullable: true
     }
+	
+	static mapping = {
+		avatar type:"blob"
+	}
 	
 	String getStatusName(){
 		if(status == INVITATION_SENT){
