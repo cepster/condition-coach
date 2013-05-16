@@ -32,7 +32,7 @@ class DailyActivityController {
 	
 	static def getData(params){
 		println "DailyActivityController-GETDATA"
-//		def map = new HashMap()
+		
 		def map = DailyActivity.list(params).collect{activity ->
 			Calendar c = Calendar.getInstance()
 			c.setTime(activity.startDate)
@@ -59,15 +59,10 @@ class DailyActivityController {
 			}
 			def endString = "${endYear}-${endMonth}-${endDay} 12:00:00"
 			
-//			return [id: activity.id, title: activity.activityDescription, text: "TestText", start: startString, end: endString, allDay: false]
 			
 			return [id: activity.id, title: activity.activityDescription, startYear: startYear, startMonth: startMonth, startDay: startDay,
 					endYear: endYear, endMonth: endMonth, endDay: endDay]
 		}
-		
-		println map
-		
-//		render map as JSON
 		
 		return map
 	}

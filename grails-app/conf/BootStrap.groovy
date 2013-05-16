@@ -13,7 +13,7 @@ class BootStrap {
       def coachRole = new Role(authority: 'ROLE_COACH').save(flush: true)
       def teamMemberRole = new Role(authority: 'ROLE_TEAMMEMBER').save(flush: true)
 
-      def testUser = new User(username: 'admin', enabled: true, password: 'password')
+      def testUser = new User(username: 'vikingsCoach', enabled: true, password: 'password')
       testUser.save(flush: true)
 	  
 	  def testUserRole = new UserRole(user:testUser, role: coachRole)
